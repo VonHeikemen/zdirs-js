@@ -57,7 +57,7 @@ export function remove(keys, delete_all) {
 
   Store.validate_keys(input);
 
-  if (delete_all == null) {
+  if (delete_all == false) {
     input.forEach((k) => {
       console.log(`deleting "${k}": ${Store.get(k)}`);
       Store.remove(k);
