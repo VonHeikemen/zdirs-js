@@ -20,7 +20,7 @@ Use the `deno install` command with the following flags:
 #### Download from github
 
 ```sh
-deno install --name zi --location http://zdirs.local https://raw.githubusercontent.com/VonHeikemen/zdirs-js/v0.1.1/src/main.js
+deno install --name zi --location http://zdirs.local https://raw.githubusercontent.com/VonHeikemen/zdirs-js/v0.1.2/src/main.js
 ```
 
 #### Or clone and install from your filesystem
