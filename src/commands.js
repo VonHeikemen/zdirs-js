@@ -177,7 +177,7 @@ funcsave z`);
       break;
 
     default:
-      jump("posix");
+      shell_jump("posix");
       break;
   }
 }
