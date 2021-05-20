@@ -106,10 +106,6 @@ Currently the first argument to `shell-jump` can be either "fish" or "posix". Th
 
 In theory `zi` can be used in any shell that allows for the user to define their own functions. The only thing you need to do is call the `cd` command (or the equivalent) with the result of `zi query`. For example in bash you could do something like this.
 
-The default implementions of `z` use `zi query` to choose the mark, this can be a bit slow (like 500 miliseconds or so), if you wish to make it faster you'll have to export your marks into a json file and use an alternate `z` implementation. Currently the `shell-jump` commands offers a couple of alternatives, one that uses `awk` and another that uses `jq`. Run `zi help shell-jump` for more information.
-
-If you wish to discuss more alternatives you can do it [here](https://github.com/VonHeikemen/zdirs-js/discussions/2).
-
 ```sh
 z () {
   cd $(zi query $@)
@@ -140,6 +136,10 @@ That's what `zi shell-jump posix` will show you. When everything is in place you
 ```sh
 z my-mark
 ```
+
+The default implementions of `z` use `zi query` to choose the mark, this can be a bit slow (like 500 miliseconds or so), if you wish to make it faster you'll have to export your marks into a json file and use an alternate `z` implementation. Currently the `shell-jump` commands offers a couple of alternatives, one that uses `awk` and another that uses `jq`. Run `zi help shell-jump` for more information.
+
+If you wish to discuss more alternatives you can do it [here](https://github.com/VonHeikemen/zdirs-js/discussions/2).
 
 ### Examples
 
