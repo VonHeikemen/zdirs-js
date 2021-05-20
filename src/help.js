@@ -42,7 +42,7 @@ zi - A glorified bookmark utility for the command line.
       zi list
       zi export
       zi import filepath
-      zi shell-jump [syntax]
+      zi shell-jump [syntax] [OPTIONS]
 
   SHELL INTEGRATION
       For this utility to change directory in your shell you'll need to add a function in the configuration 
@@ -215,7 +215,7 @@ msg["shell-jump"] = `
   shell's configuration file, because this is the only way \`zi\` can change the current working
   directory.
 
-  If you are using \`bash\` it recommended you add the function to your .bashrc.
+  If you are using \`bash\` it is recommended you add the function to your .bashrc.
 
   If you are using \`zsh\`, add it to .zshrc.
 
@@ -226,7 +226,10 @@ msg["shell-jump"] = `
     \`z work\`. Where "work" is the name of the mark.
 
   USAGE
-      zi shell-jump [syntax]
+      zi shell-jump [syntax] [OPTIONS]
+
+  OPTIONS
+      --use        Select a "json processor" to parse the exported marks. See MAKE Z FASTER section.
 
   EXAMPLES
       Show default \`z\` function:
@@ -238,5 +241,23 @@ msg["shell-jump"] = `
       Show fish compatible function:
         zi shell-jump fish
 
+      Show alternative that uses awk:
+        zi shell-jump posix --use awk
+
       Redirect output to a file (bash):
-        zi shell-jump > z.sh`;
+        zi shell-jump > z.sh
+  
+  MAKE Z FASTER
+      Because deno isn't the fastest runtime out there I figure I could offer some alternatives to make
+      \`z\` faster. All of these alternatives require for you to use \`zi export\` to create a json file
+      with all your marks. Also, this means that you are now responsable for keeping \`zi\`'s database in
+      sync with the exported file.
+
+      With the \`--use\` flag you can choose a "json processor" that will parse the exported file with your
+      marks. Currently it supports the following options: awk and jq.
+
+      * awk: awk describes it self as a "pattern scanning and processing language". It's a tool that is
+      installed every unix-like operating system I know.
+
+      * jq: Is a "Command-line JSON processor", a specialized tool to process json files. It is available on
+      many official repositories on many linux distributions. But it is not install by default.`;

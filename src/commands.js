@@ -136,9 +136,49 @@ export function list_marks() {
   }
 }
 
-export function shell_jump(syntax) {
+export function shell_jump(syntax, json_processor) {
+  const validate_processor = (options, fn) => {
+    if(fn == null) {
+      error(`Invalid argument for --use
+Please provide one of the following:
+ * ${options.join('\n * ')}
+`);
+      Deno.exit(1);
+    }
+  }
+
   switch (syntax) {
-    case "posix":
+    case "posix": {
+      const use = {
+        "zi": () => (
+          `local dest=$(zi query $@)
+
+  if [ -z "$dest" ]; then
+    return
+  fi`
+        ),
+        "awk": () => (
+          `local dirs="/path/to/dirs.json"
+  local dest=$(awk -F'"' "/^\\\\s*\\"$1\\":/ { print \\$4 }" "$dirs")
+
+  if [ -z "$dest" ]; then
+    zi query $1
+    return
+  fi` 
+        ),
+        "jq": () => (
+          `local dirs="/path/to/dirs.json"
+  local dest=$(jq -r ".[\\"$1\\"]" "$dirs")
+
+  if [ -z "$dest" ]; then
+    zi query $1
+    return
+  fi`
+        )
+      };
+
+      const query = use[json_processor];
+      validate_processor(Object.keys(use), query);
       console.log(`
 z () {
   if [ -z "$1" ]; then
@@ -146,17 +186,44 @@ z () {
     return
   fi
 
-  local dest=$(zi query $@)
-
-  if [ -z "$dest" ]; then
-    return
-  fi
+  ${query()}
 
   cd $dest
 }`);
       break;
+    }
 
-    case "fish":
+    case "fish": {
+      const use = {
+        "zi": () => (
+          `set --local dest (zi query $@)
+
+  if test -z "$dest"
+    return
+  end`
+        ),
+        "awk": () => (
+          `set --local dirs "/path/to/dirs.json"
+  set --local dest (awk -F'"' "/^\\\\s*\\"$argv[1]\\":/ { print \\$4 }" "$dirs")
+
+  if test -z "$dest"
+    zi query $argv[1]
+    return
+  end`
+        ),
+        "jq": () => (
+          `set --local dirs "/path/to/dirs.json"
+  set --local dest (jq -r ".[\\"$1\\"]" "$dirs")
+
+  if test -z "$dest"
+    zi query $argv[1]
+    return
+  end`
+        ),
+      };
+
+      const query = use[json_processor];
+      validate_processor(Object.keys(use), query);
       console.log(`
 function z
   if test -z "$argv[1]"
@@ -164,20 +231,17 @@ function z
     return
   end
 
-  set --local dest (zi query $argv)
-
-  if test -z "$dest"
-    return
-  end
+  ${query()}
 
   cd $dest
 end
 
 funcsave z`);
       break;
+    }
 
     default:
-      shell_jump("posix");
+      shell_jump("posix", json_processor || "zi");
       break;
   }
 }

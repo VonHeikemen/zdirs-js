@@ -11,6 +11,7 @@ async function main() {
     "--alias": [String],
     "--all": Boolean,
     "--help": Boolean,
+    "--use": String,
     "--version": Boolean,
 
     // Aliases
@@ -93,7 +94,7 @@ async function main() {
       break;
 
     case "shell-jump":
-      commands.shell_jump(args[0]);
+      commands.shell_jump(args[0], argv["--use"] || "zi");
       break;
 
     case "help":
