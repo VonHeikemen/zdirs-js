@@ -1,1 +1,1 @@
-export default () => "v0.1.2";
+export default () => "v0.2.0";
