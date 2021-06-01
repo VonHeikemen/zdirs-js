@@ -138,14 +138,14 @@ export function list_marks() {
 
 export function shell_jump(syntax, json_processor) {
   const validate_processor = (options, fn) => {
-    if(fn == null) {
+    if (fn == null) {
       error(`Invalid argument for --use
 Please provide one of the following:
- * ${options.join('\n * ')}
+ * ${options.join("\n * ")}
 `);
       Deno.exit(1);
     }
-  }
+  };
 
   switch (syntax) {
     case "posix": {
@@ -164,7 +164,7 @@ Please provide one of the following:
   if [ -z "$dest" ]; then
     zi query $1
     return
-  fi` 
+  fi`
         ),
         "jq": () => (
           `local dirs="/path/to/dirs.json"
@@ -174,7 +174,7 @@ Please provide one of the following:
     zi query $1
     return
   fi`
-        )
+        ),
       };
 
       const query = use[json_processor];
